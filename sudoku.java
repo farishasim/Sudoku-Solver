@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 class sudoku {
 
@@ -10,7 +11,7 @@ class sudoku {
 
     // Constructor
     sudoku() {
-        int x,x;
+        int x,y;
         this.RowSize = 9;
         this.ColSize = 9;
 
@@ -46,7 +47,7 @@ class sudoku {
                 data = myReader.nextLine();
                 dataBrs = data.trim().split(" ");
                 for(x = 0; x < this.ColSize; x++) {
-                    this.board[y][x] = Integer.parseInt(dataBrs[j]);
+                    this.board[y][x] = Integer.parseInt(dataBrs[x]);
                 }
             }
 
