@@ -9,6 +9,7 @@ class sudoku {
     int RowSize;
     int ColSize;
 
+
     // Constructor
     sudoku() {
         int x,y;
@@ -22,6 +23,7 @@ class sudoku {
         }
     }
 
+
     //*******  Methods *******//
     //*** I/O ***//
     void readFile() {
@@ -32,17 +34,6 @@ class sudoku {
             String[] dataBrs = new String[0];
             int x,y;
             
-            /*
-            i = 0;
-            while (myReader.hasNextLine()) {
-                data = myReader.nextLine();
-                dataBrs = data.trim().split(" ");
-                for(j=0; j<dataBrs.length; j++){
-                    this.Mat[i][j] = Float.parseFloat(dataBrs[j]);
-                }
-                i++;
-            }
-            */
             for (y = 0; y < this.RowSize; y++) {
                 data = myReader.nextLine();
                 dataBrs = data.trim().split(" ");
@@ -72,5 +63,73 @@ class sudoku {
         }
     }
 
+
     //*** Solving Algorithm ***//
+    boolean isValid(int x, int y) {
+        // Kamus Lokal
+        boolean testTile;
+
+        // Algorithm
+        if (x == this.ColSize) {
+            return this.isValid(0,y+1); // go to next row
+        } else {
+            testTile = (this.board[y][x] <= this.RowSize) && (this.board[y][x] >= 0);
+
+            if (x == this.ColSize-1 && y == this.RowSize-1) { // at the low-right end of the board
+                return testTile;
+            } else {
+                return testTile && this.isValid(x+1,y);
+            }
+        }
+    }
+
+    boolean isEmptyTile(int x, int y) {
+        // true if (x,y) is an empty tile
+        return this.board[y][x] == 0;
+    }
+
+    boolean isGoodTile(int x,int y) {
+        /* Check for row, column, area */
+        // Kamus Lokal
+        int i,j;
+        int areaRow, areaCol;
+        boolean good;
+
+        // Algorithm
+        good = true;
+
+        // Check row
+        for(i = 0; i < this.ColSize; i++) {
+            if (this.board[y][x] == this.board[y][i]) {
+                if (x != i) {
+                    return false;
+                }
+            }
+        }
+
+        // Check column
+        for(i = 0; i < this.RowSize; i++) {
+            if (this.board[y][x] == this.board[i][x]) {
+                if (y != i) {
+                    return false;
+                }
+            }
+        }
+
+        // Check Area
+        areaRow = y / 3 * 3;
+        areaCol = x / 3 * 3;
+
+        for (i = 0; i < 3; i++) {
+            for (j = 0; j < 3; j++) {
+                if (this.board[areaRow+i][areaCol+j] == this.board[y][x]) {
+                    if (x != areaCol+j && y != areaRow+i) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return good;
+    }
 }
