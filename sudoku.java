@@ -132,4 +132,50 @@ class sudoku {
 
         return good;
     }
+
+    boolean solve(int x, int y) {
+        if (x == this.ColSize) 
+        {
+            return this.solve(0,y+1); // go to next row
+        } 
+        else if (!isEmptyTile(x, y)) 
+        {
+            if (x == this.ColSize-1 && y == this.RowSize-1) 
+            {
+                return this.isGoodTile(x,y);
+            } 
+            else 
+            {
+                return this.isGoodTile(x,y) && this.solve(x+1,y);
+            }
+        }
+        else 
+        {
+            int i;
+            boolean solved = false;
+
+            i = 1;
+            while (i <= 9 && !solved) {
+                this.board[y][x] = i;
+                this.showBoard();
+                System.out.println("========== TEST ==========");
+                if (this.isGoodTile(x,y)) {
+                    if (x == this.ColSize-1 && y == this.RowSize-1) 
+                    {
+                        solved = true; // base case
+                    }
+                    else
+                    {
+                        solved = this.solve(x+1,y);
+                    }
+                } 
+                if (!solved) {
+                    this.board[y][x] = 0;
+                }
+                i++;
+            }
+
+            return solved;
+        }
+    }
 }
