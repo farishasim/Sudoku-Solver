@@ -157,8 +157,6 @@ class sudoku {
             i = 1;
             while (i <= 9 && !solved) {
                 this.board[y][x] = i;
-                this.showBoard();
-                System.out.println("========== TEST ==========");
                 if (this.isGoodTile(x,y)) {
                     if (x == this.ColSize-1 && y == this.RowSize-1) 
                     {
